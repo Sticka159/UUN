@@ -1,0 +1,93 @@
+h1.header {
+  /*font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;*/
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+}
+
+.createAccount {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5% 10%;
+  height: 100vh;
+  background-color: #191616;
+  font-family: "Helvetica", sans-serif;
+  color: white;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 5px;
+  border-style: none;
+  padding-left: 100px;
+  margin: 10px;
+  text-align: left;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid #fff;
+}
+
+#FormControl {
+  color: white;
+}
+
+#loginLink {
+  color: white;
+}
+
+label.form-label {
+  padding-bottom: 10;
+  margin-bottom: 0;
+}
+
+#signupButton {
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+#required {
+  margin: 0;
+  color: #c1ff72;
+  font-size: small;
+}
+
+#selectFitnessLevel{
+border-width: 5px;
+border-color: white;
+}
+
+#arrowLeft{
+  position:absolute;
+  top: 120px;
+  left: 720px;
+  background: none;
+  color: #c1ff72;
+  border: none;
+}
+
+#arrowLeft:hover{
+  color: #4d4d4d;
+
+}
+
+@media (max-width: 768px)  {
+  #arrowLeft{
+    position:absolute;
+    top: 120px;
+    left: 40px;
+  }
+}
