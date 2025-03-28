@@ -1,6 +1,4 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const router = express.Router();
@@ -8,20 +6,26 @@ const router = express.Router();
 // Register User
 router.post("/register", async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { name, email, password, confirmPassword } = req.body;
 
-        // Hash the password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        if (!name || !email || !password || !confirmPassword) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
 
-        // Create a new user
-        const newUser = new User({
-            email,
-            password: hashedPassword
-        });
+        if (password !== confirmPassword) {
+            return res.status(400).json({ error: "Passwords do not match" });
+        }
 
-        await newUser.save(); // Save the user to the database
-        res.status(201).json({ message: "User registered successfully" });
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: "Email already in use" });
+        }
+
+        const newUser = new User({ name, email, password });
+
+        await newUser.save();
+        res.status(201).json({ message: "You son of a bitch, I'm in" });
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -32,18 +36,24 @@ router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Check if all fields are provided
+        if (!email || !password) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
         // Find the user by email
         const user = await User.findOne({ email });
-        if (!user) return res.status(404).json({ message: "User not found" });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
 
         // Check if the password matches
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+        if (password !== user.password) {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
 
-        // Generate JWT token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        res.json({ message: "You son of a bitch, I'm in" });
 
-        res.json({ token });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
